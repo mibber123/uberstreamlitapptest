@@ -4,20 +4,22 @@ import numpy as np
 
 st.title('streamlit uber test')
 
-date = 'date/time'
+DATE_COLUMN = 'date/time'
 
-dataurl = ('https://s3-us-west-2.amazonaws.com/streamlit-demo-data/uber-raw-data-sep14.csv.gz')
 
-def loaddata(nrows):
-    data = pd.read_csv(dataurl, nrows)
-    lowercase = lambda x: str(x).tolower()
-    data.rename(lowercase, axis = 'columns', inplace = True)
-    data[date] = pd.to_datetime(data[date])
+
+
+DATA_URL = ('https://s3-us-west-2.amazonaws.com/'
+            'streamlit-demo-data/uber-raw-data-sep14.csv.gz')
+
+@st.cache_data
+def load_data(nrows):
+    data = pd.read_csv(DATA_URL, nrows=nrows)
+    lowercase = lambda x: str(x).lower()
+    data.rename(lowercase, axis='columns', inplace=True)
+    data[DATE_COLUMN] = pd.to_datetime(data[DATE_COLUMN])
     return data
-    
-dataloadstate = st.text('loading data...')
 
-rows = 10000
-data = loaddata(rows)
-
-dataloadstate = st.text("Loading Data...done!")
+data_load_state = st.text('Loading data...')
+data = load_data(10000)
+data_load_state.text("Done! (using st.cache_data)")
