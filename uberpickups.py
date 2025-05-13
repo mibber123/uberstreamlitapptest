@@ -6,7 +6,7 @@ st.title('streamlit uber test')
 
 date = 'date/time'
 
-dataurl = ('https://s3-us-west-2.amazonaws.com/' 'streamlit-demo-data/uber-raw-data-sep14.csv.gz')
+dataurl = ('https://s3-us-west-2.amazonaws.com/streamlit-demo-data/uber-raw-data-sep14.csv.gz')
 
 def loaddata(nrows):
     data = pd.read_csv(dataurl, nrows)
@@ -14,3 +14,9 @@ def loaddata(nrows):
     data.rename(lowercase, axis = 'columns', inplace = True)
     data[date] = pd.to_datetime(data[date])
     return data
+    
+dataloadstate = st.text('loading data...')
+
+
+rows = 10000
+data = loaddata(rows)
